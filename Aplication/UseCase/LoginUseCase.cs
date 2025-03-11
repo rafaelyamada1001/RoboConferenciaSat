@@ -1,27 +1,26 @@
-﻿using OpenQA.Selenium;
+﻿using Aplication.DTO;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
-
-namespace RoboConferenciaSat.Aplicacao
+namespace Aplication.LoginUseCase
 {
-    public class Login
+    public class LoginUseCase
     {
         private IWebDriver driver;
         private WebDriverWait wait;
 
-        public void LoginDfe()
+        public void Execute(DadosConferencia dados)
         {
-            string dataIncial = "01/02/2025";
-            string dataFinal = "28/02/2025";
-            string mesReferencia = "02";
-            string anoReferencia = "25";
-            string cnpjEmpresa = "40734904000165";
-            string pastaDownload = Path.Combine(@"C:\Downloads\", cnpjEmpresa);
+            string dataIncial = dados.DataInicial;
+            string dataFinal = dados.DataFinal;
+            string mesReferencia = dados.MesReferencia;
+            string anoReferencia = dados.AnoReferencia;
+            string cnpjEmpresa = dados.Cnpj;
+            string pastaDownload = Path.Combine(@"C:\Downloads\",cnpjEmpresa,mesReferencia);
             var options = new ChromeOptions();
 
-            // Cria a pasta se ela não existir
             if (!Directory.Exists(pastaDownload))
             {
                 Directory.CreateDirectory(pastaDownload);
@@ -29,9 +28,15 @@ namespace RoboConferenciaSat.Aplicacao
 
             if (driver == null)
             {
-                options.AddUserProfilePreference("download.default_directory", pastaDownload); // Define a pasta de download
+                options.AddUserProfilePreference("download.default_directory", pastaDownload); 
                 driver = new ChromeDriver(options);
                 wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            }
+            else
+            {
+                ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
+                var abas = driver.WindowHandles;
+                driver.SwitchTo().Window(abas.Last());
             }
 
             driver.Navigate().GoToUrl("https://dfe.4lions.tec.br/login.html");
@@ -39,6 +44,7 @@ namespace RoboConferenciaSat.Aplicacao
             //----------------Login---------------------------
             System.Threading.Thread.Sleep(1000);
             var usuario = driver.FindElement(By.Id("email"));
+            usuario.Clear();
             usuario.SendKeys("rafael.yamada@fourlions.com.br");
 
             System.Threading.Thread.Sleep(1000);
