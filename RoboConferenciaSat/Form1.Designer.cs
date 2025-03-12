@@ -229,7 +229,6 @@
             // 
             txtCnpj.Location = new Point(25, 164);
             txtCnpj.Name = "txtCnpj";
-            txtCnpj.ReadOnly = true;
             txtCnpj.Size = new Size(229, 23);
             txtCnpj.TabIndex = 13;
             // 

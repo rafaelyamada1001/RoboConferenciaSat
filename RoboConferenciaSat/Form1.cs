@@ -41,7 +41,8 @@ namespace RoboConferenciaSat
             };
 
             //_login.Execute(dados);
-            await _realizarConferenciaUseCase.ExecuteAsync(dados);
+            var realizarConferencia = new RealizarConferenciaUseCase();
+            _ = Task.Run(async () => await _realizarConferenciaUseCase.ExecuteAsync(dados));
         }
 
         private void dgvEmpresasDfe_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
