@@ -8,11 +8,12 @@ namespace Aplication.UseCase
         private readonly SeleniumService _selenium;
         private readonly LoginService _loginService;
         private readonly ConferenciaService _conferenciaService;
-        private readonly ArquivoCsvService _arquivoService;
+        private readonly ArquivoService _arquivoService;
 
-        public RealizarConferenciaUseCase()
-        {
-            _selenium = new SeleniumService(@"C:\Conferencias\");
+        public RealizarConferenciaUseCase(DadosConferencia dados)
+        {           
+
+            _selenium = new SeleniumService(dados);
             _loginService = new LoginService(_selenium);
             _conferenciaService = new ConferenciaService(_selenium, _arquivoService);
         }
@@ -21,12 +22,7 @@ namespace Aplication.UseCase
         {
             string cnpjEmpresa = dados.Cnpj;
             string mesReferencia = dados.MesReferencia;
-            string pastaDownload = Path.Combine(@"C:\Conferencias\", cnpjEmpresa, mesReferencia);
 
-            if (!Directory.Exists(pastaDownload))
-            {
-                Directory.CreateDirectory(pastaDownload);
-            }
             try
             {
                 var driver = _loginService.FazerLogin(dados);

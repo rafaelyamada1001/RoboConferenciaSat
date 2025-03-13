@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Aplication.DTO;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -10,9 +11,11 @@ namespace Aplication.Service
         private readonly ChromeDriver _driver;
         private readonly WebDriverWait _wait;
 
-        public SeleniumService(string pastaDownload)
+        public SeleniumService(DadosConferencia dados)
         {
             var options = new ChromeOptions();
+            string pastaDownload = Path.Combine(@"C:\Conferencias\", dados.NomeEmpresa, dados.MesReferencia);
+
             options.AddUserProfilePreference("download.default_directory", pastaDownload);
             options.AddUserProfilePreference("download.prompt_for_download", false);
             options.AddUserProfilePreference("download.directory_upgrade", true);

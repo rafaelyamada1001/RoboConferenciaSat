@@ -1,5 +1,6 @@
 using Aplication.DTO;
-using Aplication.LoginUseCase;
+using Aplication.Interfaces;
+using Aplication.Service;
 using Aplication.UseCase;
 using Infra.Repository;
 
@@ -9,17 +10,22 @@ namespace RoboConferenciaSat
     {
         private readonly EmpresasRepository _empresasRepository;
         private readonly LoginUseCase2 _login;
-        private readonly RealizarConferenciaUseCase _realizarConferenciaUseCase;
-        public Form1()
+        private readonly SeleniumService _selenium;
+        private readonly PostLoginUseCase _postLoginUseCase;
+        private readonly IApiService _apiService;
+        private DadosConferencia _dados;
+
+        public Form1(EmpresasRepository empresasRepository, SeleniumService selenium,
+                      LoginUseCase2 login, PostLoginUseCase postLoginUseCase, IApiService apiService)
         {
             InitializeComponent();
-            _empresasRepository = new EmpresasRepository();
-            _login = new LoginUseCase2();
-            _realizarConferenciaUseCase = new RealizarConferenciaUseCase();
+            _empresasRepository = empresasRepository;
+            _login = login;
+            _selenium = selenium;
+            _postLoginUseCase = postLoginUseCase;
+            _apiService = apiService;
 
             dgvEmpresasDfe.AutoGenerateColumns = false;
-            dgvEmpresasDfe.DataSource = _empresasRepository.ObterEmpresas().ToList();
-            dgvEmpresasDfe.Refresh();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -38,20 +44,42 @@ namespace RoboConferenciaSat
                 Cnpj = txtCnpj.Text,
                 Email = txtEmail.Text,
                 Senha = txtSenha.Text,
+                NomeEmpresa = txtNomeEmpresa.Text,
             };
 
-            //_login.Execute(dados);
-            var realizarConferencia = new RealizarConferenciaUseCase();
-            _ = Task.Run(async () => await _realizarConferenciaUseCase.ExecuteAsync(dados));
+            var usuario = await _postLoginUseCase.Execute(dados);
+            dgvEmpresasDfe.DataSource = usuario.Empresas;
+            dgvEmpresasDfe.Refresh();
+
+            var realizarConferencia = new RealizarConferenciaUseCase(dados);
+            _ = Task.Run(async () => await realizarConferencia.ExecuteAsync(dados));
         }
 
         private void dgvEmpresasDfe_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                var cnpj = dgvEmpresasDfe.Rows[e.RowIndex];
-                txtCnpj.Text = cnpj.Cells[0].Value.ToString();              
+                var row = dgvEmpresasDfe.Rows[e.RowIndex];
+                txtCnpj.Text = row.Cells[0].Value.ToString();
+                txtNomeEmpresa.Text = row.Cells[1].Value.ToString();
             }
+        }
+
+        private void btnIniciarConferencia_Click(object sender, EventArgs e)
+        {
+            var dados = new DadosConferencia()
+            {
+                DataInicial = mtxtDataInicial.Text,
+                DataFinal = mtxtDataFinal.Text,
+                AnoReferencia = txtAnoReferencia.Text,
+                MesReferencia = txtMesReferencia.Text,
+                Cnpj = txtCnpj.Text,
+                Email = txtEmail.Text,
+                Senha = txtSenha.Text,
+                NomeEmpresa = txtNomeEmpresa.Text,
+            };
+            var realizarConferencia = new RealizarConferenciaUseCase(dados);
+            _ = realizarConferencia.ExecuteAsync(dados);
         }
     }
 }
