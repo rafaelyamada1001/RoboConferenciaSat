@@ -46,79 +46,87 @@ namespace Aplication.Service
                 {
                     _selenium.Clicar(By.XPath("//button[contains(text(), 'Conferir')]"));
 
-                    Thread.Sleep(15000);
+                    Thread.Sleep(300000);
 
-                    var erroXml = _selenium.ObterDriver().FindElements(By.XPath("//div[contains(text(), 'Erro interno do servidor ao converter XML!')]")).FirstOrDefault();
+                    var erroXml = _selenium.ObterDriver()
+                        .FindElements(By.XPath("//div[contains(text(), 'Erro interno do servidor ao converter XML!')]")).FirstOrDefault();
                     if (erroXml != null)
                     {
                         _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
                         tentativas++;
                         Thread.Sleep(2000);
                     }
-                    else
+
+                    var chaveSatInvalida = _selenium.ObterDriver()
+                        .FindElements(By.XPath("//div[contains(text(), 'Chave de Segurança do SAT inválda, verifique!')]")).FirstOrDefault();
+                    if (chaveSatInvalida != null)
                     {
-                        Thread.Sleep(15000);
-
-                        var erroChaveSat = _selenium.ObterDriver()
-                            .FindElements(By.XPath("//div[@id='swal2-content' and contains(text(), 'Não foi possível realizar a conferência, verifique se a Chave de Segurança do SAT está correta!')]"))
-                            .FirstOrDefault();
-
-                        if (erroChaveSat != null)
-                        {
-                            arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Erro: Chave de Segurança do SAT inválida!");
-                            _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
-                            sucesso = false;
-                            break;
-                        }
-
-                        var mensagemEquipamentoSat = _selenium.ObterDriver()
-                            .FindElements(By.XPath("//div[@id='swal2-content' and contains(text(), 'Nenhum Equipamento SAT encontrado para o período informado, verifique!')]"))
-                            .FirstOrDefault();
-
-                        if (mensagemEquipamentoSat != null)
-                        {
-                            arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Nenhum Equipamento SAT encontrado para o período informado!");
-                            _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
-                            sucesso = false;
-                            break;
-                        }
-
-                        int arquivosDepois = Directory.GetFiles(pastaDownload).Length;
-                        var mensagem = _selenium.ObterDriver().FindElements(By.XPath("//div[@id='swal2-content' and contains(text(), 'Nenhuma divergência encontrada!')]")).FirstOrDefault();
-
-                        if (mensagem != null)
-                        {
-                            arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Nenhuma divergência encontrada!");
-                            sucesso = true;
-                            break;
-                        }
-
-                        if (arquivosDepois > arquivosAntes)
-                        {
-                            var caminhoArquivo = Directory.GetFiles(pastaDownload).FirstOrDefault(f => f.EndsWith(".xlsx"));
-                            if (!string.IsNullOrEmpty(caminhoArquivo))
-                            {
-                                var (datasDivergencia, Statusmensagem) = arquivoService.AnalisarArquivos(caminhoArquivo);
-                                string status = datasDivergencia.Any()
-                                    ? $"Divergências encontradas nas datas: {string.Join("; ", datasDivergencia.Select(d => d.ToString("dd/MM")))}"
-                                    : "Divergências encontradas";
-
-                                if (Statusmensagem != "Nenhuma divergência encontrada!")
-                                {
-                                    status = $"{status} - {Statusmensagem}";
-                                }
-
-                                arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, status);
-                            }
-                            else
-                            {
-                                arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Arquivo de conferência não encontrado");
-                            }
-
-                            sucesso = true;
-                            break;
-                        }
+                        arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Chave de Segurança do SAT inválda verifique!");
+                        _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
+                        sucesso = false;
+                        break;
                     }
+
+                    var erroChaveSat = _selenium.ObterDriver()
+                        .FindElements(By.XPath("//div[@id='swal2-content' and contains(text(), 'Não foi possível realizar a conferência, verifique se a Chave de Segurança do SAT está correta!')]"))
+                        .FirstOrDefault();
+
+                    if (erroChaveSat != null)
+                    {
+                        arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Não foi possível realizar a conferência verifique se a Chave de Segurança do SAT está correta!");
+                        _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
+                        sucesso = false;
+                        break;
+                    }
+
+                    var mensagemEquipamentoSat = _selenium.ObterDriver()
+                        .FindElements(By.XPath("//div[@id='swal2-content' and contains(text(), 'Nenhum Equipamento SAT encontrado para o período informado, verifique!')]"))
+                        .FirstOrDefault();
+
+                    if (mensagemEquipamentoSat != null)
+                    {
+                        arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Nenhum Equipamento SAT encontrado para o período informado!");
+                        _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
+                        sucesso = false;
+                        break;
+                    }
+
+                    int arquivosDepois = Directory.GetFiles(pastaDownload).Length;
+
+                    var mensagem = _selenium.ObterDriver().FindElements(By.XPath("//div[@id='swal2-content' and contains(text(), 'Nenhuma divergência encontrada!')]")).FirstOrDefault();
+                    if (mensagem != null)
+                    {
+                        arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Nenhuma divergência encontrada!");
+                        sucesso = true;
+                        break;
+                    }
+
+                    if (arquivosDepois > arquivosAntes)
+                    {
+                        var caminhoArquivo = Directory.GetFiles(pastaDownload).FirstOrDefault(f => f.EndsWith(".xlsx"));
+                        if (!string.IsNullOrEmpty(caminhoArquivo))
+                        {
+                            var (datasDivergencia, Statusmensagem) = arquivoService.AnalisarArquivos(caminhoArquivo);
+                            string status = datasDivergencia.Any()
+                                ? $"Divergências encontradas nas datas: {string.Join("; ", datasDivergencia.Select(d => d.ToString("dd/MM")))}"
+                                : "Divergências encontradas";
+
+                            if (Statusmensagem != "Nenhuma divergência encontrada!")
+                            {
+                                status = $"{status} - {Statusmensagem}";
+                            }
+
+                            arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, status);
+                        }
+                        else
+                        {
+                            arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Arquivo de conferência não encontrado");
+                        }
+
+                        sucesso = true;
+                        break;
+                    }
+
                 }
 
                 if (tentativas >= 5 && !sucesso)

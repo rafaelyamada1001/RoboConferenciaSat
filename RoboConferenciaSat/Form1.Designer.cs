@@ -86,7 +86,7 @@
             txtSenha.ReadOnly = true;
             txtSenha.Size = new Size(185, 23);
             txtSenha.TabIndex = 2;
-            txtSenha.Text = "cof3709";
+            txtSenha.Text = "conf01234";
             txtSenha.UseSystemPasswordChar = true;
             // 
             // txtEmail

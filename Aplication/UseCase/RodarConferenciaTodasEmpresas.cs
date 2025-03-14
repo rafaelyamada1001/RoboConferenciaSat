@@ -33,12 +33,10 @@ namespace Aplication.UseCase
                 // Limita para 5 processos simultâneos
                 if (tasks.Count >= 5)
                 {
-                    await Task.WhenAny(tasks); // Aguarda pelo menos uma concluir
-                    tasks.RemoveAll(t => t.IsCompleted); // Remove as que já terminaram
+                    await Task.WhenAny(tasks);
+                    tasks.RemoveAll(t => t.IsCompleted); 
                 }
             }
-
-            // Aguarda todas as conferências finalizarem
             await Task.WhenAll(tasks);
         }
     }
