@@ -8,22 +8,24 @@ namespace RoboConferenciaSat
 {
     public partial class Form1 : Form
     {
-        private readonly EmpresasRepository _empresasRepository;
-        private readonly LoginUseCase2 _login;
+
+
         private readonly SeleniumService _selenium;
         private readonly PostLoginUseCase _postLoginUseCase;
         private readonly IApiService _apiService;
         private DadosConferencia _dados;
+        private readonly RodarConferenciaTodasEmpresas _rodarConferencia;
 
-        public Form1(EmpresasRepository empresasRepository, SeleniumService selenium,
-                      LoginUseCase2 login, PostLoginUseCase postLoginUseCase, IApiService apiService)
+        public Form1(SeleniumService selenium, 
+                      PostLoginUseCase postLoginUseCase, 
+                      IApiService apiService,
+                      RodarConferenciaTodasEmpresas rodarConferencia)
         {
             InitializeComponent();
-            _empresasRepository = empresasRepository;
-            _login = login;
             _selenium = selenium;
             _postLoginUseCase = postLoginUseCase;
             _apiService = apiService;
+            _rodarConferencia = rodarConferencia;
 
             dgvEmpresasDfe.AutoGenerateColumns = false;
         }
@@ -37,8 +39,10 @@ namespace RoboConferenciaSat
         {
             var dados = new DadosConferencia()
             {
-                DataInicial = mtxtDataInicial.Text,
-                DataFinal = mtxtDataFinal.Text,
+                DataInicialDfe = mtxtDataInicialDfe.Text,
+                DataFinalDfe = mtxtDataFinalDfe.Text,
+                DataInicialSefaz = mtxtDataInicialSefaz.Text,
+                DataFinalSefaz = mtxtDataFinalSefaz.Text,
                 AnoReferencia = txtAnoReferencia.Text,
                 MesReferencia = txtMesReferencia.Text,
                 Cnpj = txtCnpj.Text,
@@ -47,12 +51,9 @@ namespace RoboConferenciaSat
                 NomeEmpresa = txtNomeEmpresa.Text,
             };
 
-            var usuario = await _postLoginUseCase.Execute(dados);
+            var usuario = await _postLoginUseCase.ExecuteAsync(dados);
             dgvEmpresasDfe.DataSource = usuario.Empresas;
             dgvEmpresasDfe.Refresh();
-
-            var realizarConferencia = new RealizarConferenciaUseCase(dados);
-            _ = Task.Run(async () => await realizarConferencia.ExecuteAsync(dados));
         }
 
         private void dgvEmpresasDfe_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -69,8 +70,10 @@ namespace RoboConferenciaSat
         {
             var dados = new DadosConferencia()
             {
-                DataInicial = mtxtDataInicial.Text,
-                DataFinal = mtxtDataFinal.Text,
+                DataInicialDfe = mtxtDataInicialDfe.Text,
+                DataFinalDfe = mtxtDataFinalDfe.Text,
+                DataInicialSefaz = mtxtDataInicialSefaz.Text,
+                DataFinalSefaz = mtxtDataFinalSefaz.Text,
                 AnoReferencia = txtAnoReferencia.Text,
                 MesReferencia = txtMesReferencia.Text,
                 Cnpj = txtCnpj.Text,
@@ -80,6 +83,42 @@ namespace RoboConferenciaSat
             };
             var realizarConferencia = new RealizarConferenciaUseCase(dados);
             _ = realizarConferencia.ExecuteAsync(dados);
+        }
+
+        private async void btnConferenciaTodasEmpresas_Click(object sender, EventArgs e)
+        {
+            var dados = new DadosConferencia()
+            {
+                DataInicialDfe = mtxtDataInicialDfe.Text,
+                DataFinalDfe = mtxtDataFinalDfe.Text,
+                DataInicialSefaz = mtxtDataInicialSefaz.Text,
+                DataFinalSefaz = mtxtDataFinalSefaz.Text,
+                AnoReferencia = txtAnoReferencia.Text,
+                MesReferencia = txtMesReferencia.Text,
+                Cnpj = txtCnpj.Text,
+                Email = txtEmail.Text,
+                Senha = txtSenha.Text,
+                NomeEmpresa = txtNomeEmpresa.Text,
+            };
+
+            var usuario = await _postLoginUseCase.ExecuteAsync(dados);
+            dgvEmpresasDfe.DataSource = usuario.Empresas;
+            dgvEmpresasDfe.Refresh();
+
+            btnConferenciaTodasEmpresas.Enabled = false;
+            try
+            {
+                await _rodarConferencia.ExecuteAsync(usuario.Empresas, dados);
+                MessageBox.Show("Conferências finalizadas!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao rodar conferências: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnConferenciaTodasEmpresas.Enabled = true; // Habilita o botão novamente
+            }
         }
     }
 }

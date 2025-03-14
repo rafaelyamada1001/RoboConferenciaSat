@@ -2,8 +2,10 @@
 {
     public class DadosConferencia
     {
-        public string DataInicial { get; set; }
-        public string DataFinal { get; set; }
+        public string DataInicialDfe { get; set; }
+        public string DataFinalDfe { get; set; }
+        public string DataInicialSefaz { get; set; }
+        public string DataFinalSefaz { get; set; }
         public string AnoReferencia { get; set; }
         public string MesReferencia { get; set; }
         public string Cnpj { get; set;}

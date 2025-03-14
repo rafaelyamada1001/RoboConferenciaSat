@@ -25,8 +25,10 @@ namespace Aplication.Service
 
                 _selenium.Clicar(By.XPath("//button[contains(text(), 'Conferência')]"));
 
-                _selenium.PreencherCampo(By.Id("txtDataInicialDFe"), dados.DataInicial);
-                _selenium.PreencherCampo(By.Id("txtDataFinalDFe"), dados.DataFinal);
+                _selenium.PreencherCampo(By.Id("txtDataInicialDFe"), dados.DataInicialDfe);
+                _selenium.PreencherCampo(By.Id("txtDataFinalDFe"), dados.DataFinalDfe);
+                _selenium.PreencherCampo(By.Id("txtDataInicialSefaz"), dados.DataInicialSefaz);
+                _selenium.PreencherCampo(By.Id("txtDataFinalSefaz"), dados.DataFinalSefaz);
                 _selenium.PreencherCampo(By.Id("txtMesDeReferencia"), dados.MesReferencia);
                 _selenium.PreencherCampo(By.Id("txtAnoDeReferencia"), dados.AnoReferencia);
 

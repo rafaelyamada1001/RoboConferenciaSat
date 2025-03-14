@@ -14,7 +14,7 @@ namespace Aplication.UseCase
             _apiService = apiService;
         }
 
-        public async Task<Usuario> Execute(DadosConferencia dados)
+        public async Task<Usuario> ExecuteAsync(DadosConferencia dados)
         {
             var requestData = new
             {

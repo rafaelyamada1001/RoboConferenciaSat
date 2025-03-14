@@ -40,17 +40,22 @@
             txtMesReferencia = new TextBox();
             txtAnoReferencia = new TextBox();
             grpDadosConferencia = new GroupBox();
+            mtxtDataFinalSefaz = new MaskedTextBox();
+            mtxtDataInicialSefaz = new MaskedTextBox();
+            label8 = new Label();
+            label7 = new Label();
             btnIniciarConferencia = new Button();
             label6 = new Label();
             txtNomeEmpresa = new TextBox();
-            mtxtDataFinal = new MaskedTextBox();
-            mtxtDataInicial = new MaskedTextBox();
+            mtxtDataFinalDfe = new MaskedTextBox();
+            mtxtDataInicialDfe = new MaskedTextBox();
             label5 = new Label();
             txtCnpj = new TextBox();
             dgvEmpresasDfe = new DataGridView();
             Cnpj = new DataGridViewTextBoxColumn();
             Nome = new DataGridViewTextBoxColumn();
             grpLogin = new GroupBox();
+            btnConferenciaTodasEmpresas = new Button();
             grpDadosConferencia.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvEmpresasDfe).BeginInit();
             grpLogin.SuspendLayout();
@@ -59,7 +64,7 @@
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(0, 39);
+            lblUsuario.Location = new Point(0, 25);
             lblUsuario.Name = "lblUsuario";
             lblUsuario.Size = new Size(53, 15);
             lblUsuario.TabIndex = 0;
@@ -68,7 +73,7 @@
             // lblSenha
             // 
             lblSenha.AutoSize = true;
-            lblSenha.Location = new Point(3, 73);
+            lblSenha.Location = new Point(3, 59);
             lblSenha.Name = "lblSenha";
             lblSenha.Size = new Size(45, 15);
             lblSenha.TabIndex = 1;
@@ -76,7 +81,7 @@
             // 
             // txtSenha
             // 
-            txtSenha.Location = new Point(62, 65);
+            txtSenha.Location = new Point(62, 51);
             txtSenha.Name = "txtSenha";
             txtSenha.ReadOnly = true;
             txtSenha.Size = new Size(185, 23);
@@ -86,7 +91,7 @@
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(62, 36);
+            txtEmail.Location = new Point(62, 22);
             txtEmail.Name = "txtEmail";
             txtEmail.ReadOnly = true;
             txtEmail.Size = new Size(185, 23);
@@ -95,7 +100,7 @@
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(172, 111);
+            btnLogin.Location = new Point(172, 86);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(75, 23);
             btnLogin.TabIndex = 4;
@@ -108,23 +113,23 @@
             label1.AutoSize = true;
             label1.Location = new Point(25, 21);
             label1.Name = "label1";
-            label1.Size = new Size(71, 15);
+            label1.Size = new Size(92, 15);
             label1.TabIndex = 7;
-            label1.Text = "Data Inicial :";
+            label1.Text = "Data Inicial Dfe :";
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Location = new Point(154, 21);
             label2.Name = "label2";
-            label2.Size = new Size(65, 15);
+            label2.Size = new Size(86, 15);
             label2.TabIndex = 8;
-            label2.Text = "Data Final :";
+            label2.Text = "Data Final Dfe :";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(25, 77);
+            label3.Location = new Point(24, 126);
             label3.Name = "label3";
             label3.Size = new Size(110, 15);
             label3.TabIndex = 9;
@@ -133,7 +138,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(154, 77);
+            label4.Location = new Point(147, 126);
             label4.Name = "label4";
             label4.Size = new Size(93, 15);
             label4.TabIndex = 10;
@@ -141,27 +146,31 @@
             // 
             // txtMesReferencia
             // 
-            txtMesReferencia.Location = new Point(25, 95);
+            txtMesReferencia.Location = new Point(24, 144);
             txtMesReferencia.Name = "txtMesReferencia";
             txtMesReferencia.Size = new Size(100, 23);
-            txtMesReferencia.TabIndex = 11;
+            txtMesReferencia.TabIndex = 4;
             txtMesReferencia.Text = "03";
             // 
             // txtAnoReferencia
             // 
-            txtAnoReferencia.Location = new Point(154, 95);
+            txtAnoReferencia.Location = new Point(147, 144);
             txtAnoReferencia.Name = "txtAnoReferencia";
             txtAnoReferencia.Size = new Size(100, 23);
-            txtAnoReferencia.TabIndex = 12;
+            txtAnoReferencia.TabIndex = 5;
             txtAnoReferencia.Text = "25";
             // 
             // grpDadosConferencia
             // 
+            grpDadosConferencia.Controls.Add(mtxtDataFinalSefaz);
+            grpDadosConferencia.Controls.Add(mtxtDataInicialSefaz);
+            grpDadosConferencia.Controls.Add(label8);
+            grpDadosConferencia.Controls.Add(label7);
             grpDadosConferencia.Controls.Add(btnIniciarConferencia);
             grpDadosConferencia.Controls.Add(label6);
             grpDadosConferencia.Controls.Add(txtNomeEmpresa);
-            grpDadosConferencia.Controls.Add(mtxtDataFinal);
-            grpDadosConferencia.Controls.Add(mtxtDataInicial);
+            grpDadosConferencia.Controls.Add(mtxtDataFinalDfe);
+            grpDadosConferencia.Controls.Add(mtxtDataInicialDfe);
             grpDadosConferencia.Controls.Add(label5);
             grpDadosConferencia.Controls.Add(txtCnpj);
             grpDadosConferencia.Controls.Add(txtMesReferencia);
@@ -170,19 +179,53 @@
             grpDadosConferencia.Controls.Add(label3);
             grpDadosConferencia.Controls.Add(label1);
             grpDadosConferencia.Controls.Add(label4);
-            grpDadosConferencia.Location = new Point(635, 165);
+            grpDadosConferencia.Location = new Point(635, 133);
             grpDadosConferencia.Name = "grpDadosConferencia";
-            grpDadosConferencia.Size = new Size(259, 273);
+            grpDadosConferencia.Size = new Size(259, 305);
             grpDadosConferencia.TabIndex = 13;
             grpDadosConferencia.TabStop = false;
             grpDadosConferencia.Text = "Dados Conferência";
             // 
+            // mtxtDataFinalSefaz
+            // 
+            mtxtDataFinalSefaz.Location = new Point(153, 89);
+            mtxtDataFinalSefaz.Mask = "00/00/0000";
+            mtxtDataFinalSefaz.Name = "mtxtDataFinalSefaz";
+            mtxtDataFinalSefaz.Size = new Size(100, 23);
+            mtxtDataFinalSefaz.TabIndex = 3;
+            // 
+            // mtxtDataInicialSefaz
+            // 
+            mtxtDataInicialSefaz.Location = new Point(25, 89);
+            mtxtDataInicialSefaz.Mask = "00/00/0000";
+            mtxtDataInicialSefaz.Name = "mtxtDataInicialSefaz";
+            mtxtDataInicialSefaz.Size = new Size(100, 23);
+            mtxtDataInicialSefaz.TabIndex = 2;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(153, 71);
+            label8.Name = "label8";
+            label8.Size = new Size(95, 15);
+            label8.TabIndex = 23;
+            label8.Text = "Data Final Sefaz :";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(24, 71);
+            label7.Name = "label7";
+            label7.Size = new Size(101, 15);
+            label7.TabIndex = 22;
+            label7.Text = "Data Inicial Sefaz :";
+            // 
             // btnIniciarConferencia
             // 
-            btnIniciarConferencia.Location = new Point(162, 244);
+            btnIniciarConferencia.Location = new Point(162, 269);
             btnIniciarConferencia.Name = "btnIniciarConferencia";
             btnIniciarConferencia.Size = new Size(91, 23);
-            btnIniciarConferencia.TabIndex = 19;
+            btnIniciarConferencia.TabIndex = 8;
             btnIniciarConferencia.Text = "Conferência";
             btnIniciarConferencia.UseVisualStyleBackColor = true;
             btnIniciarConferencia.Click += btnIniciarConferencia_Click;
@@ -190,7 +233,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(24, 184);
+            label6.Location = new Point(24, 222);
             label6.Name = "label6";
             label6.Size = new Size(94, 15);
             label6.TabIndex = 18;
@@ -198,36 +241,36 @@
             // 
             // txtNomeEmpresa
             // 
-            txtNomeEmpresa.Location = new Point(24, 202);
+            txtNomeEmpresa.Location = new Point(24, 240);
             txtNomeEmpresa.Name = "txtNomeEmpresa";
             txtNomeEmpresa.ReadOnly = true;
             txtNomeEmpresa.Size = new Size(229, 23);
-            txtNomeEmpresa.TabIndex = 17;
+            txtNomeEmpresa.TabIndex = 7;
             // 
-            // mtxtDataFinal
+            // mtxtDataFinalDfe
             // 
-            mtxtDataFinal.Location = new Point(154, 39);
-            mtxtDataFinal.Mask = "00/00/0000";
-            mtxtDataFinal.Name = "mtxtDataFinal";
-            mtxtDataFinal.Size = new Size(100, 23);
-            mtxtDataFinal.TabIndex = 16;
-            mtxtDataFinal.Text = "09032025";
-            mtxtDataFinal.ValidatingType = typeof(DateTime);
+            mtxtDataFinalDfe.Location = new Point(154, 39);
+            mtxtDataFinalDfe.Mask = "00/00/0000";
+            mtxtDataFinalDfe.Name = "mtxtDataFinalDfe";
+            mtxtDataFinalDfe.Size = new Size(99, 23);
+            mtxtDataFinalDfe.TabIndex = 1;
+            mtxtDataFinalDfe.Text = "09032025";
+            mtxtDataFinalDfe.ValidatingType = typeof(DateTime);
             // 
-            // mtxtDataInicial
+            // mtxtDataInicialDfe
             // 
-            mtxtDataInicial.Location = new Point(25, 39);
-            mtxtDataInicial.Mask = "00/00/0000";
-            mtxtDataInicial.Name = "mtxtDataInicial";
-            mtxtDataInicial.Size = new Size(100, 23);
-            mtxtDataInicial.TabIndex = 15;
-            mtxtDataInicial.Text = "01032025";
-            mtxtDataInicial.ValidatingType = typeof(DateTime);
+            mtxtDataInicialDfe.Location = new Point(25, 39);
+            mtxtDataInicialDfe.Mask = "00/00/0000";
+            mtxtDataInicialDfe.Name = "mtxtDataInicialDfe";
+            mtxtDataInicialDfe.Size = new Size(100, 23);
+            mtxtDataInicialDfe.TabIndex = 0;
+            mtxtDataInicialDfe.Text = "01032025";
+            mtxtDataInicialDfe.ValidatingType = typeof(DateTime);
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(24, 131);
+            label5.Location = new Point(24, 170);
             label5.Name = "label5";
             label5.Size = new Size(38, 15);
             label5.TabIndex = 14;
@@ -235,10 +278,10 @@
             // 
             // txtCnpj
             // 
-            txtCnpj.Location = new Point(24, 149);
+            txtCnpj.Location = new Point(25, 188);
             txtCnpj.Name = "txtCnpj";
             txtCnpj.Size = new Size(229, 23);
-            txtCnpj.TabIndex = 13;
+            txtCnpj.TabIndex = 6;
             // 
             // dgvEmpresasDfe
             // 
@@ -272,6 +315,7 @@
             // 
             // grpLogin
             // 
+            grpLogin.Controls.Add(btnConferenciaTodasEmpresas);
             grpLogin.Controls.Add(txtSenha);
             grpLogin.Controls.Add(lblSenha);
             grpLogin.Controls.Add(lblUsuario);
@@ -279,10 +323,20 @@
             grpLogin.Controls.Add(txtEmail);
             grpLogin.Location = new Point(635, 12);
             grpLogin.Name = "grpLogin";
-            grpLogin.Size = new Size(259, 147);
+            grpLogin.Size = new Size(259, 115);
             grpLogin.TabIndex = 20;
             grpLogin.TabStop = false;
             grpLogin.Text = "Login :";
+            // 
+            // btnConferenciaTodasEmpresas
+            // 
+            btnConferenciaTodasEmpresas.Location = new Point(0, 86);
+            btnConferenciaTodasEmpresas.Name = "btnConferenciaTodasEmpresas";
+            btnConferenciaTodasEmpresas.Size = new Size(110, 23);
+            btnConferenciaTodasEmpresas.TabIndex = 5;
+            btnConferenciaTodasEmpresas.Text = "Coferência Geral";
+            btnConferenciaTodasEmpresas.UseVisualStyleBackColor = true;
+            btnConferenciaTodasEmpresas.Click += btnConferenciaTodasEmpresas_Click;
             // 
             // Form1
             // 
@@ -322,8 +376,8 @@
         private DataGridView dgvEmpresasDfe;
         private TextBox txtCnpj;
         private Label label5;
-        private MaskedTextBox mtxtDataInicial;
-        private MaskedTextBox mtxtDataFinal;
+        private MaskedTextBox mtxtDataInicialDfe;
+        private MaskedTextBox mtxtDataFinalDfe;
         private Label label6;
         private TextBox txtNomeEmpresa;
         private DataGridViewTextBoxColumn CnpjCpf;
@@ -331,5 +385,10 @@
         private DataGridViewTextBoxColumn Cnpj;
         private GroupBox grpLogin;
         private Button btnIniciarConferencia;
+        private Label label8;
+        private Label label7;
+        private MaskedTextBox mtxtDataFinalSefaz;
+        private MaskedTextBox mtxtDataInicialSefaz;
+        private Button btnConferenciaTodasEmpresas;
     }
 }
