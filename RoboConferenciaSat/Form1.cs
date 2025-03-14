@@ -9,22 +9,14 @@ namespace RoboConferenciaSat
     public partial class Form1 : Form
     {
 
-
-        private readonly SeleniumService _selenium;
         private readonly PostLoginUseCase _postLoginUseCase;
-        private readonly IApiService _apiService;
-        private DadosConferencia _dados;
         private readonly RodarConferenciaTodasEmpresas _rodarConferencia;
 
-        public Form1(SeleniumService selenium, 
-                      PostLoginUseCase postLoginUseCase, 
-                      IApiService apiService,
+        public Form1( PostLoginUseCase postLoginUseCase, 
                       RodarConferenciaTodasEmpresas rodarConferencia)
         {
             InitializeComponent();
-            _selenium = selenium;
             _postLoginUseCase = postLoginUseCase;
-            _apiService = apiService;
             _rodarConferencia = rodarConferencia;
 
             dgvEmpresasDfe.AutoGenerateColumns = false;

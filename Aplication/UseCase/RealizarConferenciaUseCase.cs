@@ -15,6 +15,7 @@ namespace Aplication.UseCase
 
             _selenium = new SeleniumService(dados);
             _loginService = new LoginService(_selenium);
+            _arquivoService = new ArquivoService();
             _conferenciaService = new ConferenciaService(_selenium, _arquivoService);
         }
 

@@ -15,13 +15,14 @@ namespace RoboConferenciaSat
         static void Main()
         {
             // Configuração da injeção de dependência
-            var serviceProvider = new ServiceCollection()               
+            var serviceProvider = new ServiceCollection()
                 .AddSingleton<SeleniumService>() // Registra a instância única de SeleniumService
                 .AddSingleton<PostLoginUseCase>() // Registra o PostLoginUseCase
                 .AddSingleton<IApiService, ApiService>() // Registra a interface IApiService e sua implementação ApiService
                 .AddSingleton<HttpClient>()
                 .AddSingleton<Form1>() // Registra o Form1 para injeção
                 .AddSingleton<RodarConferenciaTodasEmpresas>()
+                .AddScoped<ArquivoService>()
                 .BuildServiceProvider();
 
             // Inicializa o formulário e passa o service provider para a injeção
