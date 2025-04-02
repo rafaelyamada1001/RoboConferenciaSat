@@ -254,7 +254,6 @@
             mtxtDataFinalDfe.Name = "mtxtDataFinalDfe";
             mtxtDataFinalDfe.Size = new Size(99, 23);
             mtxtDataFinalDfe.TabIndex = 1;
-            mtxtDataFinalDfe.Text = "09032025";
             mtxtDataFinalDfe.ValidatingType = typeof(DateTime);
             // 
             // mtxtDataInicialDfe

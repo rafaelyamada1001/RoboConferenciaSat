@@ -12,7 +12,6 @@ namespace Aplication.UseCase
 
         public RealizarConferenciaUseCase(DadosConferencia dados)
         {           
-
             _selenium = new SeleniumService(dados);
             _loginService = new LoginService(_selenium);
             _arquivoService = new ArquivoService();

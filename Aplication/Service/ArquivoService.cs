@@ -32,11 +32,11 @@ namespace Aplication.Service
         public (List<DateTime> DatasFiltradas, string mensagem) AnalisarArquivos(string caminhoArquivo)
         {
             var datasFiltradas = new List<DateTime>();
-            string mensagem = "Nenhuma divergência encontrada!"; // Mensagem padrão
+            string mensagem = "Nenhuma divergência encontrada!";
 
             try
             {
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Necessário para uso gratuito
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 var registros = new List<RegistroXlsx>();
 
@@ -69,7 +69,7 @@ namespace Aplication.Service
 
                 // Verificando se existem chaves canceladas
                 var chavesCanceladas = registros
-                    .Where(r => r.Situacao == "C") // Situação "C" para canceladas
+                    .Where(r => r.Situacao == "C") 
                     .Select(r => r.Chave)
                     .Distinct()
                     .ToList();

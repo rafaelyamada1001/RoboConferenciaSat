@@ -16,7 +16,6 @@ namespace Aplication.Service
 
         public void IniciarConferencia(DadosConferencia dados)
         {
-
             try
             {
                 _selenium.EsperarElemento(By.ClassName("vs__search"));
@@ -33,7 +32,7 @@ namespace Aplication.Service
                 _selenium.Clicar(By.XPath("//button[contains(text(), 'Conferir')]"));
 
 
-                string pastaDownload = Path.Combine(@"C:\Conferencias\", dados.NomeEmpresa, dados.MesReferencia);
+                string pastaDownload = Path.Combine($@"C:\Conferencias\{dados.Cnpj} {dados.NomeEmpresa}\{dados.MesReferencia}");
                 if (!Directory.Exists(pastaDownload))
                 {
                     Directory.CreateDirectory(pastaDownload);
@@ -45,14 +44,13 @@ namespace Aplication.Service
                 {
                     Thread.Sleep(5000);
 
-                    bool sucesso = false;
                     int tentativas = 0;
 
                     var erroXml = _selenium.ObterDriver()
                         .FindElements(By.XPath("//div[contains(text(), 'Erro interno do servidor ao converter XML!')]")).FirstOrDefault();
                     if (erroXml != null)
                     {
-                        while (!sucesso && tentativas < 5)
+                        while (tentativas < 5)
                         {
                             _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
                             _selenium.Clicar(By.XPath("//button[contains(text(), 'Conferir')]"));
@@ -61,13 +59,12 @@ namespace Aplication.Service
                         }
                     }
 
-                    var chaveSatInvalida = _selenium.ObterDriver()
+                    var erroChaveSatInvalida = _selenium.ObterDriver()
                         .FindElements(By.XPath("//div[contains(text(), 'Chave de Segurança do SAT inválda, verifique!')]")).FirstOrDefault();
-                    if (chaveSatInvalida != null)
+                    if (erroChaveSatInvalida != null)
                     {
                         _arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Chave de Segurança do SAT inválda verifique!");
                         _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
-                        sucesso = false;
                         break;
                     }
 
@@ -79,7 +76,6 @@ namespace Aplication.Service
                     {
                         _arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Não foi possível realizar a conferência verifique se a Chave de Segurança do SAT está correta!");
                         _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
-                        sucesso = false;
                         break;
                     }
 
@@ -91,7 +87,6 @@ namespace Aplication.Service
                     {
                         _arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Nenhum Equipamento SAT encontrado para o período informado!");
                         _selenium.Clicar(By.XPath("//button[contains(text(), 'OK')]"));
-                        sucesso = false;
                         break;
                     }
 
@@ -101,7 +96,6 @@ namespace Aplication.Service
                     if (mensagem != null)
                     {
                         _arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Nenhuma divergência encontrada!");
-                        sucesso = true;
                         break;
                     }
 
@@ -126,8 +120,6 @@ namespace Aplication.Service
                         {
                             _arquivoService.SalvarEmpresaCsv(dados.Cnpj, dados.NomeEmpresa, "Arquivo de conferência não encontrado");
                         }
-
-                        sucesso = true;
                         break;
                     }
 

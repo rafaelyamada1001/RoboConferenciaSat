@@ -14,16 +14,21 @@ namespace Aplication.Service
         public SeleniumService(DadosConferencia dados)
         {
             var options = new ChromeOptions();
-            string pastaDownload = Path.Combine(@"C:\Conferencias\", dados.NomeEmpresa, dados.MesReferencia);
+            string pastaDownload = Path.Combine($@"C:\Conferencias\{dados.Cnpj} {dados.NomeEmpresa}\{dados.MesReferencia}");
 
             options.AddUserProfilePreference("download.default_directory", pastaDownload);
             options.AddArgument("--start-maximized");
             options.AddUserProfilePreference("download.prompt_for_download", false);
             options.AddUserProfilePreference("download.directory_upgrade", true);
-
             options.AddArgument("--window-size=1280,720");
 
-            _driver = new ChromeDriver(options);
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--headless");
+
+            var service = ChromeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = true;
+
+            _driver = new ChromeDriver(service, options);
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
         }
 
